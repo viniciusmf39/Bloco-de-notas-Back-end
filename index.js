@@ -4,10 +4,11 @@ const server = express();
 
 server.use(express.json());
 
-const users = [];
+const blocos = [];
+let id = [];
 
 function verifyData(req,res,next){
-    const {email,conteudo,data,hora} = req.body;
+    const {titulo,conteudo,data,hora} = req.body;
     
     if(!conteudo){
         return res.json({
@@ -21,9 +22,9 @@ function verifyData(req,res,next){
         return res.json({
             error:'hora é obrigatório'
         });
-    }else if (!email){
+    }else if (!titulo){
         return res.json({
-            error:'email é obrigatório'
+            error:'titulo é obrigatório'
         });
     }
 
@@ -36,45 +37,58 @@ server.get('/',(req,res) => {
     })
 });
 
-server.get('/users',(req,res)=>{
-    return res.json({users});
+server.get('/blocos',(req,res)=>{
+    return res.json({blocos});
 });
 
-server.get('/users/:id',(req,res)=>{
+server.get('/blocos/:id',(req,res)=>{
     const {id} = req.params;
 
     return res.json({
         result:'usuario encontrado com sucesso',
-        user: users[id]
+        user: blocos[id]
     });
 });
 
-server.put('/users', (req,res)=>{
-    const {email,conteudo,data,hora} = req.body;
+server.put('/blocos', (req,res)=>{
+    const {titulo,conteudo,data,hora} = req.body;
     const {id} = req.params;
 
-    const user={
-        email,
+    const bloco={
+        id,
+        titulo,
         conteudo,
         data,
         hora,
     }
+    id++
 
-    users[id] = user;
+    blocos[id] = bloco;
     return res.json({
-        result: 'Dados atualizados com sucesso',
-        user: user 
+        result: 'Bloco atualizado',
+        user: bloco 
     })
 })
 
-server.post('/users', verifyData,(req,res)=>{
-   const {email,conteudo,data,hora} = req.body;
+server.post('/blocos', verifyData,(req,res)=>{
+   const {titulo,conteudo,data,hora} = req.body;
 
-    const user = {email,conteudo,data,hora};
+    const bloco = {titulo,conteudo,data,hora};
     
-    users.push(user);
+    blocos.push(bloco);
 
-    return res.json(user);
-})
+    return res.json(bloco);
+});
 
-server.listen(3000);
+server.delete("/blocos/:id", (req,res)=>{
+    
+    const {id} = req.params;
+    
+    list.splice(id,1);
+    
+    return res.json({
+        result:"bloco apagado"
+    });
+});
+
+server.listen(8080);
