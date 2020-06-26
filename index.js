@@ -84,7 +84,7 @@ server.delete("/blocos/:id", (req,res)=>{
     
     const {id} = req.params;
     
-    list.splice(id,1);
+    blocos.splice(id,1);
     
     return res.json({
         result:"bloco apagado"
