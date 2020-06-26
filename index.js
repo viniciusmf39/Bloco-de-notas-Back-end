@@ -46,7 +46,7 @@ server.get('/blocos/:id',(req,res)=>{
 
     return res.json({
         result:'bloco encontrado com sucesso',
-        user: blocos[id]
+        bloco: blocos[id]
     });
 });
 
